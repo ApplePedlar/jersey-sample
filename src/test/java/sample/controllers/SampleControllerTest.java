@@ -7,9 +7,8 @@ import sample.EmbeddedGrizzly;
 import sample.MyApplication;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by yoan on 2016/06/02.
@@ -35,9 +34,9 @@ public class SampleControllerTest {
         assertThat(res, containsString("btnName = fuga"));
     }
 
-    protected API api(String pathAndQuery) {
+    protected API api(String path) {
         return new API(embeddedGrizzly.getBaseUri())
-                .pathAndQuery(pathAndQuery);
+                .path(path);
     }
 
 }

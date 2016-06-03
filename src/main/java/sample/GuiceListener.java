@@ -29,18 +29,4 @@ public class GuiceListener extends GuiceServletContextListener {
         injector = Guice.createInjector(module);
     }
 
-    public static void init(ServiceLocator serviceLocator, Module ... applicationModules) {
-        Module allModules[] = new Module[applicationModules.length + 1];
-
-        allModules[0] = new HK2IntoGuiceBridge(serviceLocator);
-        for (int lcv = 0; lcv < applicationModules.length; lcv++) {
-            allModules[lcv + 1] = applicationModules[lcv];
-        }
-
-        injector = Guice.createInjector(allModules);
-
-        GuiceBridge.getGuiceBridge().initializeGuiceBridge(serviceLocator);
-        GuiceIntoHK2Bridge g2h = serviceLocator.getService(GuiceIntoHK2Bridge.class);
-        g2h.bridgeGuiceInjector(injector);
-    }
 }
