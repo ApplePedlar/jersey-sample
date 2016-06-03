@@ -1,11 +1,7 @@
 package sample;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.message.GZipEncoder;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -18,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,11 +117,6 @@ public class API {
         return this;
     }
 
-    public API entity(FormDataMultiPart formData) {
-        entity = Entity.entity(formData, formData.getMediaType());
-        return this;
-    }
-
     public API cookie(String name, String value) {
         cookies.add(new Cookie(name, value));
         return this;
@@ -192,8 +182,6 @@ public class API {
 
     private Builder builder() {
         WebTarget target = ClientBuilder.newClient()
-                .register(MultiPartFeature.class)
-                .register(JacksonFeature.class)
                 .register(GZipEncoder.class)
                 .property(ClientProperties.FOLLOW_REDIRECTS, false)
                 .target(baseUri)

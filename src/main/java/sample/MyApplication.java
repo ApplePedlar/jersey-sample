@@ -1,14 +1,10 @@
 package sample;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.HttpMethodOverrideFilter;
-import org.glassfish.jersey.server.validation.ValidationFeature;
 import org.jvnet.hk2.guice.bridge.api.HK2IntoGuiceBridge;
 
 import javax.inject.Inject;
@@ -30,10 +26,10 @@ public class MyApplication extends ResourceConfig {
     public MyApplication(ServiceLocator serviceLocator, Module... modules) {
         packages(CONTROLLERS);
 
-        register(JacksonFeature.class);
-        register(JacksonJaxbJsonProvider.class);
-        register(MultiPartFeature.class);
-        register(ValidationFeature.class);
+//        register(JacksonFeature.class);
+//        register(JacksonJaxbJsonProvider.class);
+//        register(MultiPartFeature.class);
+//        register(ValidationFeature.class);
         register(HttpMethodOverrideFilter.class);
 
         GuiceListener.init(serviceLocator, modules);
