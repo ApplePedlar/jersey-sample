@@ -21,7 +21,6 @@ public class MyApplication extends ResourceConfig {
         register(SampleUtil.class);
 
         Injector injector = Guice.createInjector(new HK2IntoGuiceBridge(serviceLocator));
-
         GuiceBridge.getGuiceBridge().initializeGuiceBridge(serviceLocator);
         GuiceIntoHK2Bridge g2h = serviceLocator.getService(GuiceIntoHK2Bridge.class);
         g2h.bridgeGuiceInjector(injector);

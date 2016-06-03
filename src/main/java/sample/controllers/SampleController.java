@@ -1,5 +1,6 @@
 package sample.controllers;
 
+import sample.model.Param;
 import sample.util.SampleUtil;
 
 import javax.inject.Inject;
@@ -39,18 +40,6 @@ public class SampleController {
     @POST
     public String hoge(@BeanParam Param param) {
         return "hoge btnName = " + param.getBtnName() + ", uri = " + sampleUtil.getBaseUri();
-    }
-
-    private static class Param {
-        @FormParam("btnName")
-        private String btnName;
-        public void setBtnName(String btnName) {
-            this.btnName = btnName;
-        }
-
-        public String getBtnName() {
-            return btnName;
-        }
     }
 
 }
