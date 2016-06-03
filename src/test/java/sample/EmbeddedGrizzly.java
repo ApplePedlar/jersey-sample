@@ -17,7 +17,7 @@ public class EmbeddedGrizzly extends ExternalResource {
     private HttpServer server;
 
     public EmbeddedGrizzly(Class<? extends ResourceConfig> clazz) {
-        this(String.format("http://localhost:1%04d/", (int) (Math.random() * 10000)), clazz);
+        this("http://localhost:8090/", clazz);
     }
 
     public EmbeddedGrizzly(String baseUri, Class<? extends ResourceConfig> clazz) {
@@ -38,9 +38,6 @@ public class EmbeddedGrizzly extends ExternalResource {
         ServletRegistration servletRegistration = context.addServlet("ServletContainer", ServletContainer.class);
         servletRegistration.addMapping("/*");
         servletRegistration.setInitParameter("javax.ws.rs.Application", clazz.getCanonicalName());
-
-        // これを設定しないとエラーが起きた時のレスポンスがHTMLになってisErrorを使っているテストが全部こける
-        servletRegistration.setInitParameter("jersey.config.server.response.setStatusOverSendError", "true");
 
         context.deploy(server);
 

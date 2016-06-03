@@ -2,9 +2,14 @@ package sample.controllers;
 
 import org.junit.ClassRule;
 import org.junit.Test;
-import sample.API;
 import sample.EmbeddedGrizzly;
 import sample.MyApplication;
+
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;
@@ -19,24 +24,45 @@ public class SampleControllerTest {
 
     @Test
     public void foo() throws Exception {
-        assertThat(api("foo").get(String.class), startsWith("foo"));
+        String res = get("foo");
+        assertThat(res, startsWith("foo"));
+        assertThat(res, containsString("http://localhost:8090/"));
     }
 
     @Test
     public void baa() throws Exception {
-        String res = api("baa").form("btnName", "abc").post(String.class);
+        MultivaluedMap<String, String> form = new MultivaluedHashMap<String, String>() {{
+            add("btnName", "abc");
+        }};
+        String res = post("baa", form);
         assertThat(res, containsString("btnName = abc"));
+        assertThat(res, containsString("http://localhost:8090/"));
     }
 
     @Test
     public void hoge() throws Exception {
-        String res = api("hoge").form("btnName", "fuga").post(String.class);
+        MultivaluedMap<String, String> form = new MultivaluedHashMap<String, String>() {{
+            add("btnName", "fuga");
+        }};
+        String res = post("hoge", form);
         assertThat(res, containsString("btnName = fuga"));
+        assertThat(res, containsString("http://localhost:8090/"));
     }
 
-    protected API api(String path) {
-        return new API(embeddedGrizzly.getBaseUri())
-                .path(path);
+    private String get(String path) {
+        return ClientBuilder.newClient()
+                .target(embeddedGrizzly.getBaseUri())
+                .path(path)
+                .request()
+                .get(String.class);
+    }
+
+    private String post(String path, MultivaluedMap<String, String> form) {
+        return ClientBuilder.newClient()
+                .target(embeddedGrizzly.getBaseUri())
+                .path(path)
+                .request()
+                .post(Entity.form(form), String.class);
     }
 
 }
